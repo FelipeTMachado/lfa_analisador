@@ -34,6 +34,25 @@ class Automato:
                 
                 continue
 
+            # ESTADO: NÚMEROS (INTEIROS E REAIS)
+            if caractere_atual.isdigit():
+                numero = ""
+                eh_real = False
+                while posicao < tamanho and (texto[posicao].isdigit() or texto[posicao] == '.'):
+                    if texto[posicao] == '.':
+                        if eh_real: # SE JÁ FOR REAL E ENCONTRAR OUTRO PONTO, PARAMOS O NÚMERO AQUI
+                            break
+                        eh_real = True
+                    numero += texto[posicao]
+                    posicao += 1
+                
+                if eh_real:
+                    tokens.append(('NUMERO_REAL', numero))
+                else:
+                    tokens.append(('NUMERO_INTEIRO', numero))
+                continue
+
+
             # SE ENCONTRAR ALGO QUE NÃO RECONHECE AINDA, AVANÇA PARA NÃO TRAVAR O LOOP
             if not caractere_atual.isspace():
                 print(f"CARACTERE AINDA NÃO TRATADO: {caractere_atual}")
