@@ -52,6 +52,24 @@ class Automato:
                     tokens.append(('NUMERO_INTEIRO', numero))
                 continue
 
+            # ESTADO: LITERAIS (STRINGS) 
+            if caractere_atual == '"' or caractere_atual == "'":
+                aspa_inicial = caractere_atual
+                conteudo_literal = ""
+                posicao += 1 # PULA A ASPA INICIAL
+                
+                while posicao < tamanho and texto[posicao] != aspa_inicial:
+                    conteudo_literal += texto[posicao]
+                    posicao += 1
+                
+                if posicao < tamanho and texto[posicao] == aspa_inicial:
+                    posicao += 1 # PULA A ASPA FINAL
+                    tokens.append(('LITERAL', conteudo_literal))
+                else:
+                    # SE CHEGOU AO FIM DO TEXTO SEM FECHAR ASPAS
+                    tokens.append(('ERRO_LITERAL_NAO_FECHADO', conteudo_literal))
+                continue
+
 
             # SE ENCONTRAR ALGO QUE NÃO RECONHECE AINDA, AVANÇA PARA NÃO TRAVAR O LOOP
             if not caractere_atual.isspace():
