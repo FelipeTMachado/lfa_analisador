@@ -71,6 +71,29 @@ class Automato:
                 continue
 
 
+            # ESTADO: OPERADORES E SÍMBOLOS ESPECIAIS 
+            # OPERADORES DE UM ÚNICO CARACTERE
+            if caractere_atual in "+-*/^~":
+                tokens.append(('OPERADOR', caractere_atual))
+                posicao += 1
+                continue
+
+            # OPERADOR DIFERENTE (!=) OU NEGAÇÃO SIMPLES (!)
+            if caractere_atual == '!':
+                if posicao + 1 < tamanho and texto[posicao + 1] == '=':
+                    tokens.append(('OPERADOR_DIFERENTE', '!='))
+                    posicao += 2
+                else:
+                    tokens.append(('OPERADOR_NEGACAO', '!'))
+                    posicao += 1
+                continue
+
+            # OPERADORES LÓGICOS E DE COMPARAÇÃO
+            if caractere_atual in "<>=":
+                tokens.append(('OPERADOR_LOGICO', caractere_atual))
+                posicao += 1
+                continue
+
             # SE ENCONTRAR ALGO QUE NÃO RECONHECE AINDA, AVANÇA PARA NÃO TRAVAR O LOOP
             if not caractere_atual.isspace():
                 print(f"CARACTERE AINDA NÃO TRATADO: {caractere_atual}")
