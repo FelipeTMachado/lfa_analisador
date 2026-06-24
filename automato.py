@@ -38,18 +38,27 @@ class Automato:
             if caractere_atual.isdigit():
                 numero = ""
                 eh_real = False
-                while posicao < tamanho and (texto[posicao].isdigit() or texto[posicao] == '.'):
-                    if texto[posicao] == '.':
-                        if eh_real: # SE JÁ FOR REAL E ENCONTRAR OUTRO PONTO, PARAMOS O NÚMERO AQUI
-                            break
-                        eh_real = True
+
+                while (posicao < tamanho) and ((texto[posicao].isdigit() or texto[posicao] == '.') or (texto[posicao].isalpha())):
+                    if texto[posicao].isalpha: 
+                        if texto[posicao] == '.':
+                            if eh_real: # SE JÁ FOR REAL E ENCONTRAR OUTRO PONTO, PARAMOS O NÚMERO AQUI
+                                break
+                            eh_real = True
+                    
                     numero += texto[posicao]
                     posicao += 1
+
+                
                 
                 if eh_real:
                     tokens.append(('NUMERO_REAL', numero))
                 else:
-                    tokens.append(('NUMERO_INTEIRO', numero))
+                    if numero.isdigit():
+                        tokens.append(('NUMERO_INTEIRO', numero))
+                    else:
+                        tokens.append(('ERRO_IDENTIFICADOR_INVALIDO', numero))
+                        
                 continue
 
             # ESTADO: LITERAIS (STRINGS) 
